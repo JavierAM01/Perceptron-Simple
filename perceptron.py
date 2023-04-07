@@ -1,6 +1,6 @@
 import numpy as np
 
-np.random.seed(0)
+np.random.seed(59)
 
 
 def sigmoid(x):
@@ -17,8 +17,10 @@ class Perceptron:
     def __init__(self, n_inputs, lr):
         self.n = n_inputs
         self.lr = lr
-        self.w = np.random.randn(n_inputs) # nº aleatorios distribuidos por una : N(0,1)
-        self.w0 = np.random.randn(1)
+        # self.w = np.random.randn(n_inputs) # nº aleatorios distribuidos por una : N(0,1)
+        # self.w0 = np.random.randn(1)
+        self.w = np.random.randint(-10,10+1, (n_inputs,)) *0.5
+        self.w0 = np.random.randint(-10,10+1, (1,)) *0.5
 
     def forward(self, X):
         pred = np.dot(X, self.w) + self.w0

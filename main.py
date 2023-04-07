@@ -64,6 +64,7 @@ def train_random_data():
     lr = 0.1 #ask_number(float)
 
     # points 
+    np.random.seed(0)
     px = 10*np.random.rand(n) - 5
     py = 10*np.random.rand(n) - 5
 
@@ -75,7 +76,7 @@ def train_random_data():
 
     perceptron = Perceptron(n_inputs=2, lr=lr)
 
-    train(X, Y, perceptron, epochs=epochs, save_filename="train_random_data.gif")
+    train(X, Y, perceptron, epochs=epochs, interval=100, save_filename="train_random_data.gif")
 
 
 def train_3_points():
@@ -85,6 +86,7 @@ def train_3_points():
     Y = np.array([classify(p) for p in X])
     train(X, Y, perceptron, epochs=5, interval=1000, save_filename="train_3_points.gif")
 
+
 if __name__ == "__main__":
-    train_3_points()
+    # train_3_points()
     train_random_data()
