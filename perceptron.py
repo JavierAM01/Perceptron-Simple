@@ -24,24 +24,20 @@ class Perceptron:
         pred = np.dot(X, self.w) + self.w0
         return sigmoid(pred)
     
-    def f(self, x, y):
+    def fit(self, x, y):
         pred = self.forward(x)
         error = y - pred
         self.w  += self.lr * error * x
         self.w0 += self.lr * error
         return abs(error)
 
-    def fit(self, X, Y, epochs=1):
+    def fit_sample(self, X, Y, epochs=1):
         N = len(X)
         losses = []
         for epoch in range(epochs):
             for i in range(0,N):
-                x = X[i,:] 
-                y = Y[i]                   
-                pred = self.forward(x)
-                error = y - pred
-                self.w  += self.lr * error * x
-                self.w0 += self.lr * error
-                losses.append(abs(error))
+                x, y = X[i,:], Y[i]                   
+                error = self.fit(x,y)
+                losses.append(error)
             print(f"[{epoch+1}] last error: {losses[-1]} | mean error: {sum(losses)/len(losses)}")
         return losses

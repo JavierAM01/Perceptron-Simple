@@ -28,7 +28,7 @@ def update(i, X, Y, perceptron, ax, points1, points2):
     p = lambda x : -(perceptron.w[0] * x + perceptron.w0) / perceptron.w[1]
 
     ax.clear()
-    ax.set_title("Epoch " + str(epoch) + " : Point " + str(t))
+    ax.set_title(f"Trainning phase (lr = {perceptron.lr})\nEpoch : {epoch}\nNº data : {t+1}")
     ax.plot(points1[:,0], points1[:,1], "b.")
     ax.plot(points2[:,0], points2[:,1], "r.")
     ax.plot([-6,6], [p(-6),p(6)], "k-")  # recta del perceptron
@@ -37,25 +37,37 @@ def update(i, X, Y, perceptron, ax, points1, points2):
     ax.set_ylim(-6,6)
     
     x, y = X[t], Y[t]                  
-    perceptron.f(x, y)
+    perceptron.fit(x, y)
 
-def train_perceptron():
+def train(X, Y, perceptron, epochs, interval=250, figsize=(6,6), save_filename="ani.gif"):
+
+    n = len(Y)
+    points1 = X[[f(p) > 0 for p in X]]
+    points2 = X[[f(p) <= 0 for p in X]]
+
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111)
+
+    ani = FuncAnimation(fig, update, frames=range(epochs*n), fargs=[X, Y, perceptron, ax, points1, points2], interval=interval)
+    ani.save(f"images/{save_filename}")
+    plt.show()
+
+
+def train_random_data():
 
     # ask for parameters
     print("Number of points:")
-    n = ask_number()
+    n = 50 #ask_number()
     print("Number of epochs:")
-    epochs = ask_number()
+    epochs = 3 #ask_number()
     print("Learning rate:")
-    lr = ask_number(float)
+    lr = 0.1 #ask_number(float)
 
     # points 
     px = 10*np.random.rand(n) - 5
     py = 10*np.random.rand(n) - 5
 
     points = list(zip(px, py))
-    points1 = np.array([p for p in points if f(p) > 0])
-    points2 = np.array([p for p in points if f(p) <= 0])
 
     # training data
     X = np.array(points)
@@ -63,16 +75,16 @@ def train_perceptron():
 
     perceptron = Perceptron(n_inputs=2, lr=lr)
 
-    fig = plt.figure(figsize=(6,6))
-    ax = fig.add_subplot(111)
-
-    ani = FuncAnimation(fig, update, frames=range(epochs*n), fargs=[X, Y, perceptron, ax, points1, points2], interval=250)
-    ani.save("images/ani.gif")
-    plt.show()
-       
+    train(X, Y, perceptron, epochs=epochs, save_filename="train_random_data.gif")
 
 
-
+def train_3_points():
+    E1, E2, E3 = (1,1), (1,0), (0,1)
+    perceptron = Perceptron(n_inputs=2, lr=0.5)
+    X = np.array([E1, E2, E3])
+    Y = np.array([classify(p) for p in X])
+    train(X, Y, perceptron, epochs=5, interval=1000, save_filename="train_3_points.gif")
 
 if __name__ == "__main__":
-    train_perceptron()
+    train_3_points()
+    train_random_data()
