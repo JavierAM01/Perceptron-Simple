@@ -39,7 +39,7 @@ def update(i, X, Y, perceptron, ax, points1, points2):
     x, y = X[t], Y[t]                  
     perceptron.fit(x, y)
 
-def train(X, Y, perceptron, epochs, interval=250, figsize=(6,6), save_filename="ani.gif"):
+def train(X, Y, perceptron, epochs, interval=250, figsize=(6,6), save=False, save_filename="ani.gif"):
 
     n = len(Y)
     points1 = X[[f(p) > 0 for p in X]]
@@ -49,11 +49,12 @@ def train(X, Y, perceptron, epochs, interval=250, figsize=(6,6), save_filename="
     ax = fig.add_subplot(111)
 
     ani = FuncAnimation(fig, update, frames=range(epochs*n), fargs=[X, Y, perceptron, ax, points1, points2], interval=interval)
-    ani.save(f"images/{save_filename}")
+    if save:
+        ani.save(f"images/{save_filename}")
     plt.show()
 
 
-def train_random_data():
+def train_random_data(save=False):
 
     # ask for parameters
     print("Number of points:")
@@ -76,17 +77,17 @@ def train_random_data():
 
     perceptron = Perceptron(n_inputs=2, lr=lr)
 
-    train(X, Y, perceptron, epochs=epochs, interval=100, save_filename="train_random_data.gif")
+    train(X, Y, perceptron, epochs=epochs, interval=100, save=save, save_filename="train_random_data_.gif")
 
 
-def train_3_points():
+def train_3_points(save=False):
     E1, E2, E3 = (1,1), (1,0), (0,1)
     perceptron = Perceptron(n_inputs=2, lr=0.5)
     X = np.array([E1, E2, E3])
     Y = np.array([classify(p) for p in X])
-    train(X, Y, perceptron, epochs=5, interval=1000, save_filename="train_3_points.gif")
+    train(X, Y, perceptron, epochs=5, interval=1000, save=save, save_filename="train_3_points_.gif")
 
 
 if __name__ == "__main__":
-    # train_3_points()
-    train_random_data()
+    train_3_points(save=False)
+    train_random_data(save=False)
