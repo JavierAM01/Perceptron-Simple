@@ -90,7 +90,18 @@ X = np.array([E1, E2, E3])
 Y = np.array([classify(p) for p in X])
 ```
 
-Por último entrenamos el perceptrón con la función *fit* mencionada anteriormente.
+Por último entrenamos el perceptrón con la función *fit* mencionada anteriormente. Obtenemos el siguiente resultado,
+
+<div style="text-align:center;">
+  <image src="/images/train_3_points.gif" style="width:100%; height:12cm;">
+</div>
+
+Podemos observar que una sola iteración por los puntos, no es suficiente para hacer la clasificación correctamente. Por otro lado el la 4ª iteración ya obtenemos el resultado correcto. He de resaltar que la recta en gris es la recta de sepación $f(x,y) = 2$, y la recta que se mueve es la que va obteniendo el perceptrón como resultado. 
+
+Pese a que las ambas rectas en ningún momento son semejantes no quita que en la 4ª iteración el resultado del perceptrón es correcto. Hay que fijarse únicamente en los datos que tenemos, el perceptrón solo va a entender que tiene que separar los puntos rojos de los azules, pero tal como están situados en el plano, existen multitudes de soluciones de rectas. Si queremos que el resultado sea más parecido a la recta $f(x,y) = 2$, tendremos que darle más datos de entrada y sus respectivas clasificaciones con el fin de realizar un mejor ajuste. Para ello creamos 50 aleatorios y ponemos a funcionar el entrenamiento del perceptrón varias iteraciones, consiguiendo los siguientes resultados:
+
+<div style="text-align:center;">
+  <image src="/images/train_random_data.gif" style="width:100%; height:12cm;">
+</div>
 
 
- 
